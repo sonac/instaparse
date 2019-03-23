@@ -6,16 +6,18 @@ class InstagramScrap():
     
     def __init__(self, username, password):
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument("--disable-setuid-sandbox")
         self.browser = webdriver.Chrome(chrome_options=options)
         self.username = username
         self.password = password
 
     # We need to authorize, otherwise bot would be redirected to login page (even for public profiles)
     def auth(self):
-        time.sleep(2)
 
         self.browser.get('https://www.instagram.com/accounts/login/')
+        time.sleep(5)
 
         username_input = self.browser.find_elements_by_css_selector('form input')[0]
         password_input = self.browser.find_elements_by_css_selector('form input')[1]
@@ -23,7 +25,7 @@ class InstagramScrap():
         username_input.send_keys(self.username)
         password_input.send_keys(self.password)
         password_input.send_keys(Keys.ENTER)
-        time.sleep(2)
+        time.sleep(5)
 
     def get_followers_count(self, username):
         user_url = 'https://www.instagram.com/' + username
