@@ -13,6 +13,8 @@ class InstagramScrap():
 
     # We need to authorize, otherwise bot would be redirected to login page (even for public profiles)
     def auth(self):
+        time.sleep(2)
+
         self.browser.get('https://www.instagram.com/accounts/login/')
 
         username_input = self.browser.find_elements_by_css_selector('form input')[0]
@@ -69,11 +71,3 @@ class InstagramScrap():
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.close_browser()
-
-bot = InstagramScrap('andreysumko', 'ght3thdfnbd')
-bot.auth()
-followers = bot.get_user_followers('shaiworth', 20)
-
-
-for follower in followers:
-    print(follower + ' with ' + bot.get_followers_count(follower) + ' followers')

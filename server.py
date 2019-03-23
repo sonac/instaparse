@@ -4,6 +4,7 @@ import os
 
 from json import loads
 from requests import Response
+from typing import Dict
 
 from sanic import Sanic
 from sanic.response import json
@@ -25,16 +26,19 @@ class ParsingServer(Sanic):
   async def index(self, request):
     return json({'message': 'Welcome to the internet, let me be your guide'})
 
-  async def parse_followers(self, request):
+  async def parse_followers(self, request, username):
     user_data = request.json
     bot = InstagramScrap(user_data['username'], user_data['password'])
 
     bot.auth()
-    followers = bot.get_user_followers(user_data['username'], 20)
-    followers_dict = {}
+    followers = bot.get_user_followers(username, 20)
+    followers_dict: Dict = {}
+    print(followers)
 
     for follower in followers:
       followers_dict[follower] = bot.get_followers_count(follower)
+
+    print(followers_dict)
       
     return json(followers_dict)
 
